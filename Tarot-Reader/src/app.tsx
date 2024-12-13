@@ -1,12 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+// import CardDisplay from '/components/CardDisplay';
 
 interface Card {
     name: string;
-    name_short: string;
-    desc: string;
-    meaning_up: string;
-    meaning_rev: string;
+    description: string;
     type: string;
 }
 
@@ -15,12 +13,8 @@ const App: React.FC = () => {
 
     useEffect(() => {
         const fetchCards = async () => {
-            try {
-                const { data } = await axios.get('http://localhost:5000/api/tarot/cards/random?n=3');
-                setCards(data.cards);
-            } catch (error) {
-                console.error('Error fetching Tarot cards:', error);
-            }
+            const { data } = await axios.get('http://localhost:5000/api/tarot/cards');
+            setCards(data.cards);
         };
 
         fetchCards();
@@ -31,12 +25,7 @@ const App: React.FC = () => {
             <h1>Tarot Card Reading</h1>
             <div style={{ display: 'flex', justifyContent: 'center' }}>
                 {cards.map((card) => (
-                    <div key={card.name_short} style={{ margin: '10px', padding: '10px', border: '1px solid black' }}>
-                        <h3>{card.name}</h3>
-                        <p>{card.desc}</p>
-                        <p><strong>Upright Meaning:</strong> {card.meaning_up}</p>
-                        <p><strong>Reversed Meaning:</strong> {card.meaning_rev}</p>
-                    </div>
+                    <CardDisplay key={card.name} name={card.name} description={card.desc} image="" />
                 ))}
             </div>
         </div>
